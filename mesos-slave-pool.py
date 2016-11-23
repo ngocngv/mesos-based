@@ -19,3 +19,25 @@ yum -y install mesos
 echo zk://master-1:2181,master-2:2181,master-3:2181,master-4:2181,master-5:2181/mesos > /etc/mesos/zk
 
 
+# Disabling Mesos master in the slave nodes
+systemctl stop mesos-master  
+systemctl disable mesos-master
+
+
+# Restarting Mesos
+systemctl restart mesos-slave  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
