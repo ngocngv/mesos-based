@@ -54,6 +54,10 @@ MARATHON_TASK_LOST_EXPUNGE_GC=60000
 MARATHON_TASK_LOST_EXPUNGE_INITIAL_DELAY=60000  
 MARATHON_TASK_LOST_EXPUNGE_INTERVAL=60000  
 
+# Depending on the task you want to run in Marathon, it can take quite while to start, so, we increased the task launch timeout to 10 minutes. 
+# Also, we are enabling the http callback feature for the service discovery, thus, Nixy will register itself in Marathon for the service discovery and finally update Nginx if any service is healthy/unhealthy. 
+# Also, we decreased the interval time for Marathon to remove lost tasks that may happen sometimes.
+
 
 # Restarting Mesos, Marathon and Zookeeper
 systemctl restart zookeeper  
