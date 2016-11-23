@@ -1,4 +1,4 @@
-#Number Pool        Hostname
+#Number   Pool        Hostname
 #1	    Slave       slave-1
 #2	    Slave       slave-2
 #3	    Slave       slave-3
