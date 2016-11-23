@@ -45,9 +45,20 @@ systemctl stop mesos-slave
 systemctl disable mesos-slave
 
 
+# Configuring Marathon
+#--------------------------------------------------------------------------
+# Add the following lines to /etc/sysconfig/marathon:
+MARATHON_EVENT_SUBSCRIBER=http_callback  
+MARATHON_TASK_LAUNCH_TIMEOUT=600000  
+MARATHON_TASK_LOST_EXPUNGE_GC=60000  
+MARATHON_TASK_LOST_EXPUNGE_INITIAL_DELAY=60000  
+MARATHON_TASK_LOST_EXPUNGE_INTERVAL=60000  
 
 
-
+# Restarting Mesos, Marathon and Zookeeper
+systemctl restart zookeeper  
+systemctl restart mesos-master  
+systemctl restart marathon
 
 
 
