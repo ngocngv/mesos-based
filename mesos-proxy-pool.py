@@ -87,6 +87,64 @@ addr = "localhost:8125" # optional for statistics
 
 # vim /opt/nixy/nginx.tmpl
 #---------------------------------------------------------------------------------------
+# git clone https://github.com/martensson/nixy.git
+cp nginx-stream.tmpl /opt/nixy/
+cp nginx.tmpl /opt/nixy/
+
+
+
+
+# Configure Nixy to start as a service:
+
+# /etc/systemd/system/nixy.service:
+#---------------------------------------------------------------------------------------
+[Unit]  
+Description=Nixy Service  
+After=nginx.service
+
+[Service]
+Type=simple  
+ExecStart=/bin/sh -c '/opt/nixy/nixy -f /opt/nixy/nixy.toml &> /var/log/nixy.log'  
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+
+#---------------------------------------------------------------------------------------
+[Unit]  
+Description=Nixy Service  
+After=nginx.service
+
+[Service]
+User=root
+Group=root
+Type=simple  
+ExecStart=/bin/sh -c '/opt/nixy/nixy -f /opt/nixy/nixy.toml &> /var/log/nixy.log'  
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+
+
+
+#
+systemctl daemon-reload
+
+systemctl enable nixy
+systemctl start nixy
+
+
+# Validating:
+# systemctl status nixy
+# tail -f /var/log/nixy.log
+# URL: curl -X GET http://localhost:8000/v1/health
+
+
+
 
 
 
