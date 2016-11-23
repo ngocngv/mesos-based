@@ -2,11 +2,11 @@
 
 # http://www.thedevpiece.com/building-a-microservice-infrastructure-using-mesos-marathon-and-zookeeper/
 
-
 # Building a Microservice Infrastructure using Mesos, Marathon and Zookeeper
-
-
 # master pool, slave pool, proxy pool
+
+
+# Configuring the master pool
 
 
 # Installing the repository
