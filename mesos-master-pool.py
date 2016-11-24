@@ -12,7 +12,15 @@
 # Installing the repository
 rpm -Uvh http://repos.mesosphere.com/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm
 
-
+  
+#
+# yum --enablerepo=mesosphere list mesos
+# yum --enablerepo=mesosphere-noarch list mesos
+# yum --enablerepo=mesosphere-unstable list mesos
+  
+  
+  
+  
 # Installing Zookeeper, Marathon and Mesos in the master pool
 yum -y install mesos marathon mesosphere-zookeeper
 
