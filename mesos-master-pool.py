@@ -48,7 +48,7 @@ echo "zk://master-1:2181,master-2:2181,master-3:2181,master-4:2181,master-5:2181
 echo "mesos-cluster" | tee /etc/mesos-master/cluster
 
 # If you have multiple Ethernet interfaces and if you want to ensure that mesos-master is listening on a specific interface:
-# echo "ipaddr" | sudo tee /etc/mesos-master/ip
+# echo "ipaddr" | tee /etc/mesos-master/ip
 
 # Mesos master hostname:
 # echo "mesos-master.ipaddr" | tee /etc/mesos-master/hostname
