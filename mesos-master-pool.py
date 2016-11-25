@@ -28,7 +28,7 @@ yum -y install mesos marathon mesosphere-zookeeper
 # Configuring Zookeeper
 #--------------------------------------------------------------------------
 # Set /etc/zookeeper/conf/myid to the id of the current master.
-echo 1 > /etc/zookeeper/conf/myid
+echo '1' > /etc/zookeeper/conf/myid
 
 # Configure /etc/zookeeper/conf/zoo.cfg, informing each machine our cluster will have.
 server.1=master-1:2888:3888  
@@ -41,10 +41,21 @@ server.5=master-5:2888:3888
 # Configuring Mesos
 #--------------------------------------------------------------------------
 # Now, you need to edit your /etc/mesos/zk informing the ZK url of your cluster:
-echo zk://master-1:2181,master-2:2181,master-3:2181,master-4:2181,master-5:2181/mesos >  /etc/mesos/zk
+# echo zk://master-1:2181,master-2:2181,master-3:2181,master-4:2181,master-5:2181/mesos > /etc/mesos/zk
+echo "zk://master-1:2181,master-2:2181,master-3:2181,master-4:2181,master-5:2181/mesos" | tee /etc/mesos/zk
+          
+# Specify a cluster name to mesos
+echo "mesos-cluster" | tee /etc/mesos-master/cluster
+
+# If you have multiple Ethernet interfaces and if you want to ensure that mesos-master is listening on a specific interface:
+# echo "ipaddr" | sudo tee /etc/mesos-master/ip
+
+# Mesos master hostname:
+# echo "mesos-master.ipaddr" | tee /etc/mesos-master/hostname
+
 
 # Since we have five master machines, the mesos quorum will be three:
-echo 3 > /etc/mesos-master/quorum
+echo '3' > /etc/mesos-master/quorum
 
 
 
