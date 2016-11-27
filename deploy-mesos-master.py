@@ -29,6 +29,21 @@ echo "zk://master-1:2181,master-2:2181,master-3:2181,master-4:2181,master-5:2181
 
 
 
+# Firewall Changes
+# Open Ports 5050,5051,2181,2888,3888
+
+firewall-cmd --permanent --zone=public --add-port=5050/tcp    # mesos-master
+firewall-cmd --permanent --zone=public --add-port=5051/tcp    # mesos-slave
+firewall-cmd --permanent --zone=public --add-port=8080/tcp    # marathon
+firewall-cmd --permanent --zone=public --add-port=4400/tcp    # chronos
+firewall-cmd --reload
+
+
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 2181 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 5050 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 5051 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 8080 -j ACCEPT
+
 
 
 
