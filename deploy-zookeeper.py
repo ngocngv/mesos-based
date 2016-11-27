@@ -1,5 +1,18 @@
 #!/usr/bin/python
 
+
+# Install JRE
+# yum install java-1.8.0-openjdk
+
+# Install JDK
+# yum install java-1.8.0-openjdk-devel
+
+# openjdk version "1.8.0_111"
+# OpenJDK Runtime Environment (build 1.8.0_111-b15)
+# OpenJDK 64-Bit Server VM (build 25.111-b15, mixed mode)
+
+
+
 # Installing the repository
 # rpm -Uvh http://repos.mesosphere.com/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm
 rpm -Uvh http://repos.mesosphere.com/el/7/noarch/RPMS/mesosphere-el-repo-7-3.noarch.rpm
@@ -18,7 +31,9 @@ echo '1' > /etc/zookeeper/conf/myid
 cp /etc/zookeeper/conf/zoo.cfg /etc/zookeeper/conf/zoo.cfg.bak
 #
 cat << EOF | tee /etc/zookeeper/conf/zoo.cfg
-maxClientCnxns=50
+# the maximum number of client connections.
+# increase this if you need to handle more clients
+maxClientCnxns=60
 # The number of milliseconds of each tick
 tickTime=2000
 # The number of ticks that the initial 
