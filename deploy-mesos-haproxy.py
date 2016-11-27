@@ -16,6 +16,9 @@ yum install haproxy
 # /etc/haproxy/haproxy.cfg
 #----------------------------------------------------------------------------
 
+#---------------------------------------------------------------------
+# Global settings
+#---------------------------------------------------------------------
 global
     log         127.0.0.1 local2
 
@@ -26,6 +29,13 @@ global
     group       haproxy
     daemon
 
+    # turn on stats unix socket
+    stats socket /var/lib/haproxy/stats
+    
+#---------------------------------------------------------------------
+# common defaults that all the 'listen' and 'backend' sections will
+# use if not designated in their block
+#---------------------------------------------------------------------
 defaults
     mode                    http
     log                     global
@@ -43,7 +53,11 @@ defaults
     timeout http-keep-alive 10s
     timeout check           10s
     maxconn                 3000
+    
 
+#---------------------------------------------------------------------
+# listening
+#---------------------------------------------------------------------
 listen  stats   *:8888
         mode            http
         log             global
@@ -62,12 +76,20 @@ listen  stats   *:8888
         stats auth admin:password
         stats uri  /haproxy?stats
 
+        
+#---------------------------------------------------------------------
+# main frontend which proxys to the backends
+#---------------------------------------------------------------------        
 frontend  mesos_frontend
     bind *:80
     option http-server-close
     option forwardfor
     default_backend mesos_backend
 
+    
+#---------------------------------------------------------------------
+# round robin balancing between the various backends
+#---------------------------------------------------------------------
 backend mesos_backend
     balance     roundrobin
     option httpchk GET /metrics/snapshot
