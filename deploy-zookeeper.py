@@ -1,15 +1,19 @@
 #!/usr/bin/python
 
+# http://davidssysadminnotes.blogspot.com/2016/06/setting-up-apache-mesos-cluster-centos-7.html
 
-# Install JRE
+
+## Install JRE
 # yum install java-1.8.0-openjdk
 
-# Install JDK
+## Install JDK
 # yum install java-1.8.0-openjdk-devel
 
-# openjdk version "1.8.0_111"
-# OpenJDK Runtime Environment (build 1.8.0_111-b15)
-# OpenJDK 64-Bit Server VM (build 25.111-b15, mixed mode)
+## Install Zookeeper
+# - Unzipped 3.4.8 to opt folder
+# - Created user zookeeper (useradd zookeeper)
+# - Created symbolic link (ln -s zookeeper zookeeper-3.4.8)
+# - Set owner/group of all file to zookeeper 
 
 
 
@@ -21,10 +25,6 @@ rpm -Uvh http://repos.mesosphere.com/el/7/noarch/RPMS/mesosphere-el-repo-7-3.noa
 # Installing Zookeeper in the master pool
 yum -y install mesosphere-zookeeper
 
-
-# Configuring Zookeeper
-# Set /etc/zookeeper/conf/myid to the id of the current master.
-echo '1' > /etc/zookeeper/conf/myid
 
 
 # Configure /etc/zookeeper/conf/zoo.cfg, informing each machine our cluster will have.
@@ -52,10 +52,65 @@ EOF
 
 
 
+# - Created /var/lib/zookeeper; also set owner to zookeeper:zookeeper
+# - Created myid file contents of "1"
+# - Created zookeeper.service in /etc/systemd/system folder
+
+# Configuring Zookeeper
+# Set /etc/zookeeper/conf/myid to the id of the current master.
+echo '1' > /etc/zookeeper/conf/myid
+
+
+# /usr/lib/systemd/system/zookeeper.service
+#--------------------------------------------------------------------------------
+[Unit]
+Description=Apache ZooKeeper
+After=network.target
+ConditionPathExists=/etc/zookeeper/conf/zoo.cfg
+ConditionPathExists=/etc/zookeeper/conf/log4j.properties
+
+[Service]
+Environment="ZOOCFGDIR=/etc/zookeeper/conf"
+SyslogIdentifier=zookeeper
+WorkingDirectory=/opt/mesosphere/zookeeper
+ExecStart=/opt/mesosphere/zookeeper/bin/zkServer.sh start-foreground
+Restart=on-failure
+RestartSec=20
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+# /etc/systemd/system/zookeeper.service
+#--------------------------------------------------------------------------------
+[Unit]
+Description=Apache Zookeeper server
+Documentation=http://zookeeper.apache.org
+Requires=network.target remote-fs.target
+After=network.target remote-fs.target
+
+[Service]
+Type=forking
+User=zookeeper
+Group=zookeeper
+ExecStart=/opt/zookeeper/bin/zkServer.sh start
+ExecStop=/opt/zookeeper/bin/zkServer.sh stop
+ExecReload=/opt/zookeeper/bin/zkServer.sh restart
+WorkingDirectory=/var/lib/zookeeper
+
+[Install]
+WantedBy=multi-user.target
 
 
 
 
+## Loaded
+systemctl daemon-reload
+systemctl enable zookeeper
+systemctl start zookeeper
 
 
 
