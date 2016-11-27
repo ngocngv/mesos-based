@@ -49,6 +49,9 @@ wget https://github.com/martensson/nixy/releases/download/v0.8.0/nixy_0.8.0_linu
 tar -xvf nixy_*.tar.gz
 
 #
+mkdir -p /opt/nixy/src/
+cd /opt/nixy/src/
+#
 git clone https://github.com/martensson/nixy.git
 
 
