@@ -1,5 +1,8 @@
 
 
+# http://davidssysadminnotes.blogspot.com/2016/06/setting-up-haproxy-for-mesos-centos-7.html
+
+
 
 # Setting up HAProxy for Mesos
 
@@ -72,11 +75,58 @@ backend mesos_backend
     server  k1 master-1:5050 check
     server  k2 master-2:5050 check
     server  k3 master-3:5050 check 
-      
-      
-      
-      
-      
+
+        
+        
+        
+        
+# firewall-cmd --permanent --add-port=8888/tcp
+# firewall-cmd --permanent --add-port=80/tcp 
+# firewall-cmd --reload
+
+
+
+# Enable Logging
+
+# /etc/rsyslog.conf
+
+# Uncomment:
+$ModLoad imudp
+$UDPServerRun 514
+
+
+# /etc/rsyslog.d/haproxy.conf
+local2.* /var/log/haproxy.log
+
+
+# Restart Rsyslog
+systemctl restart rsyslog
+
+
+
+# Access
+# This accesses the master  
+http://k1.ipaddr.com 
+
+# The stats are here.  You'll need to supply username/password specified in config.
+http://m1.ipaddr.com:8888/haproxy?stats
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
