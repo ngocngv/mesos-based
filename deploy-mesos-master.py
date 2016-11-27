@@ -13,6 +13,10 @@ yum -y install mesos-1.1.0
 
 
 
+# Configuring Mesos
+# edit /etc/mesos/zk informing the ZK url of your cluster:
+echo "zk://master-1:2181,master-2:2181,master-3:2181,master-4:2181,master-5:2181/mesos" | tee /etc/mesos/zk
+   
 
 
 
