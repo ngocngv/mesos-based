@@ -107,6 +107,19 @@ backend mesos_backend
 # firewall-cmd --reload
 
 
+# -A INPUT -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT
+# -A INPUT -p tcp -m state --state NEW -m tcp --dport 8888 -j ACCEPT
+
+
+
+#
+systemctl enable haproxy
+systemctl start haproxy
+
+
+
+
+
 
 # Enable Logging
 
@@ -128,28 +141,10 @@ systemctl restart rsyslog
 
 # Access
 # This accesses the master  
-http://k1.ipaddr.com 
+http://youip.com:80
 
-# The stats are here.  You'll need to supply username/password specified in config.
-http://m1.ipaddr.com:8888/haproxy?stats
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# The stats are here. You'll need to supply username/password specified in config.
+http://youip.com:8888/haproxy?stats
 
 
 
