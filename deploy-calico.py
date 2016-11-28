@@ -74,8 +74,9 @@ __EOF__
 
 
 
-
-
+https://gist.github.com/philwinder/8f4c652723fa5c374b86a5e440bf4330
+https://issues.apache.org/jira/browse/MESOS-5702
+http://severalnines.com/blog/mysql-docker-multi-host-networking-mysql-containers-part-2-calico
 
 
 
