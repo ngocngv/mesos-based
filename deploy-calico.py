@@ -24,6 +24,9 @@ echo '/data/mesos/cni/plugins' | tee /etc/mesos-slave/network_cni_plugins_dir
 echo '/data/mesos/cni/conf.d' | tee /etc/mesos-slave/network_cni_config_dir
 
 
+# find /etc/mesos-slave/* | xargs cat
+
+
 #
 cd /data/mesos/cni/plugins
 wget https://github.com/containernetworking/cni/releases/download/v0.3.0/cni-v0.3.0.tgz
@@ -46,20 +49,22 @@ tar xvf cni-*.tgz
 
 
 
-
+# https://github.com/containernetworking/cni
+# https://github.com/containernetworking/cni/blob/master/SPEC.md
+#--------------
 
 # Add example Mesos CNI plugin configuration
-cat << '__EOF__' | tee /data/mesos/cni/conf.d/10-net.conf
+cat << '__EOF__' | tee /data/mesos/cni/conf.d/10-bridge.conf
 {
     "cniVersion": "0.3.0",
-    "name": "mynet",
+    "name": "bridge-10-200",
     "type": "bridge",
     "bridge": "cni0",
     "isGateway": true,
     "ipMasq": true,
     "ipam": {
         "type": "host-local",
-        "subnet": "10.22.0.0/16",
+        "subnet": "10.200.0.0/16",
         "routes": [
             { "dst": "0.0.0.0/0" }
         ]
@@ -68,14 +73,22 @@ cat << '__EOF__' | tee /data/mesos/cni/conf.d/10-net.conf
 __EOF__
 
 
+#
+cat << '__EOF__' | tee /data/mesos/cni/conf.d/99-loopback.conf
+{
+    "cniVersion": "0.3.0",
+    "type": "loopback"
+}
+__EOF__
+
+
+
+# systemctl restart mesos-slave
+# systemctl status mesos-slave
 
 
 
 
-
-
-https://gist.github.com/philwinder/8f4c652723fa5c374b86a5e440bf4330
-https://issues.apache.org/jira/browse/MESOS-5702
 http://severalnines.com/blog/mysql-docker-multi-host-networking-mysql-containers-part-2-calico
 
 
