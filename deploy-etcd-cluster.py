@@ -64,7 +64,7 @@ ETCD_ADVERTISE_CLIENT_URLS="http://127.0.0.1:2379,http://172.17.42.1:2379,http:/
 #ETCD_PROXY_DIAL_TIMEOUT="1000"
 #ETCD_PROXY_WRITE_TIMEOUT="5000"
 #ETCD_PROXY_READ_TIMEOUT="0"
-#
+
 #[security]
 #ETCD_CERT_FILE=""
 #ETCD_KEY_FILE=""
@@ -74,12 +74,12 @@ ETCD_ADVERTISE_CLIENT_URLS="http://127.0.0.1:2379,http://172.17.42.1:2379,http:/
 #ETCD_PEER_KEY_FILE=""
 #ETCD_PEER_CLIENT_CERT_AUTH="false"
 #ETCD_PEER_TRUSTED_CA_FILE=""
-#
+
 #[logging]
 #ETCD_DEBUG="false"
 # examples for -log-package-levels etcdserver=WARNING,security=DEBUG
 #ETCD_LOG_PACKAGE_LEVELS=""
-#
+
 #[profiling]
 #ETCD_ENABLE_PPROF="false"
 __EOF__
@@ -90,11 +90,11 @@ __EOF__
 
 
 
-# /usr/lib/systemd/system/etcd.service
+# edit /usr/lib/systemd/system/etcd.service
 #------------------------------------------------------------------------------------
-
+cat << '__EOF__' | tee /etc/systemd/system/etcd.service
 [Unit]
-Description=Etcd Server
+Description=Etcd Cluster
 After=network.target
 After=network-online.target
 Wants=network-online.target
@@ -105,19 +105,25 @@ WorkingDirectory=/var/lib/etcd/
 EnvironmentFile=-/etc/etcd/etcd.conf
 User=etcd
 # set GOMAXPROCS to number of processors
-ExecStart=/bin/bash -c "GOMAXPROCS=$(nproc) /usr/bin/etcd --name=\"${ETCD_NAME}\" --data-dir=\"${ETCD_DATA_DIR}\" --listen-client-urls=\"${ETCD_LISTEN_CLIENT_URLS}\""
+# ExecStart=/bin/bash -c "GOMAXPROCS=$(nproc) /usr/bin/etcd --name=\"${ETCD_NAME}\" --data-dir=\"${ETCD_DATA_DIR}\" --listen-client-urls=\"${ETCD_LISTEN_CLIENT_URLS}\""
+ExecStart=/usr/local/bin/etcd
 Restart=on-failure
 LimitNOFILE=65536
 
 [Install]
 WantedBy=multi-user.target
 
+__EOF__
 
 
 
 
 
 
+# systemctl enable etcd
+# systemctl start etcd
+
+# systemctl status etcd
 
 
 
