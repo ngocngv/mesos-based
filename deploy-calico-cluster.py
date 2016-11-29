@@ -95,6 +95,7 @@ __EOF__
 # Download the Calico CNI plugin to the $NETWORK_CNI_PLUGINS_DIR you configured for Mesos:
 export NETWORK_CNI_PLUGINS_DIR=/var/lib/mesos/cni/plugins
 
+# golang calico
 curl -L -o $NETWORK_CNI_PLUGINS_DIR/calico https://github.com/projectcalico/calico-cni/releases/download/v1.5.1/calico
 
 chmod +x $NETWORK_CNI_PLUGINS_DIR/calico
@@ -106,13 +107,25 @@ ln -s $NETWORK_CNI_PLUGINS_DIR/calico $NETWORK_CNI_PLUGINS_DIR/calico-ipam
 # The calico/node container can easily be launched using calicoctl, Calico’s command line tool. 
 # When doing so, we must provide the location of the running etcd instance by setting the ECTD_AUTHORITY environment variable.
 
-curl -L -o /usr/local/bin/calicoctl https://github.com/projectcalico/calico-containers/releases/download/v0.23.0/calicoctl
+# golang calicoctl
+curl -L -o /usr/local/bin/calicoctl https://github.com/projectcalico/calico-containers/releases/download/v1.0.0-beta/calicoctl
 
 chmod +x /usr/local/bin/calicoctl
 
 ETCD_ENDPOINTS=http://<etcd-ip:port> ./calicoctl node
 
 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
 
 
