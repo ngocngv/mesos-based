@@ -90,7 +90,7 @@ __EOF__
 
 
 
-## Installation
+## Calico Installation
 
 # Download the Calico CNI plugin to the $NETWORK_CNI_PLUGINS_DIR you configured for Mesos:
 export NETWORK_CNI_PLUGINS_DIR=/var/lib/mesos/cni/plugins
@@ -122,38 +122,4 @@ ETCD_ENDPOINTS=http://<etcd-ip:port> ./calicoctl node
         
         
         
-        
-        
-        
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
