@@ -24,33 +24,43 @@ cp etcdctl /usr/local/bin/
 
 
 
+
+
+
+# https://docs.onegini.com/cim/idp/2.39.01-SNAPSHOT/installation/etcd.html
+# https://n40lab.wordpress.com/2016/08/01/installing-coreos-etcd-server-on-centos-7/
+# http://severalnines.com/blog/mysql-docker-multi-host-networking-mysql-containers-part-2-calico
+
+
 #
 # edit /etc/etcd/etcd.conf
 #----------------------------------------------------------------------------------
 cat << '__EOF__' | tee /etc/etcd/etcd.conf
 # [member]
-ETCD_NAME=default
+ETCD_NAME=etcd_1
 ETCD_DATA_DIR="/var/lib/etcd/default.etcd"
 #ETCD_WAL_DIR=""
 #ETCD_SNAPSHOT_COUNT="10000"
 #ETCD_HEARTBEAT_INTERVAL="100"
 #ETCD_ELECTION_TIMEOUT="1000"
-ETCD_LISTEN_PEER_URLS="http://127.0.0.1:2380"
+#ETCD_LISTEN_PEER_URLS="http://127.0.0.1:2380"
+ETCD_LISTEN_PEER_URLS="http://0.0.0.0:2380"
 #ETCD_LISTEN_CLIENT_URLS="http://127.0.0.1:2379"
-ETCD_LISTEN_CLIENT_URLS="http://127.0.0.1:2379,http://172.17.42.1:2379,http://172.16.181.132:2379"
+#ETCD_LISTEN_CLIENT_URLS="http://127.0.0.1:2379,http://172.17.42.1:2379,http://172.16.181.132:2379"
+ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:2379"
 #ETCD_MAX_SNAPSHOTS="5"
 #ETCD_MAX_WALS="5"
 #ETCD_CORS=""
 
 # [cluster]
 ETCD_INITIAL_ADVERTISE_PEER_URLS="http://127.0.0.1:2380"
-# if you use different ETCD_NAME (e.g. test), set ETCD_INITIAL_CLUSTER value for this name, i.e. "test=http://..."
-ETCD_INITIAL_CLUSTER="default=http://127.0.0.1:2380"
+ETCD_INITIAL_CLUSTER="etcd_cluster_1=http://127.0.0.1:2380"
 ETCD_INITIAL_CLUSTER_STATE="new"
-ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster"
+ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster-1"
 #
 #ETCD_ADVERTISE_CLIENT_URLS="http://127.0.0.1:2379"
-ETCD_ADVERTISE_CLIENT_URLS="http://127.0.0.1:2379,http://172.17.42.1:2379,http://172.16.181.132:2379"
+#ETCD_ADVERTISE_CLIENT_URLS="http://127.0.0.1:2379,http://172.17.42.1:2379,http://172.16.181.132:2379"
+ETCD_ADVERTISE_CLIENT_URLS="http://0.0.0.0:2379"
 #ETCD_DISCOVERY=""
 #ETCD_DISCOVERY_SRV=""
 #ETCD_DISCOVERY_FALLBACK="proxy"
@@ -124,15 +134,6 @@ __EOF__
 # systemctl start etcd
 
 # systemctl status etcd
-
-
-
-
-
-
-# https://docs.onegini.com/cim/idp/2.39.01-SNAPSHOT/installation/etcd.html
-# https://n40lab.wordpress.com/2016/08/01/installing-coreos-etcd-server-on-centos-7/
-# http://severalnines.com/blog/mysql-docker-multi-host-networking-mysql-containers-part-2-calico
 
 
 
