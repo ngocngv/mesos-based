@@ -54,6 +54,7 @@ ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:2379"
 
 # [cluster]
 ETCD_INITIAL_ADVERTISE_PEER_URLS="http://127.0.0.1:2380"
+#ETCD_INITIAL_CLUSTER="etcd_1=http://127.0.0.1:2380,etcd_2=http://172.17.42.1:2380,etcd_3=http://172.16.181.132:2380"
 ETCD_INITIAL_CLUSTER="etcd_1=http://127.0.0.1:2380"
 ETCD_INITIAL_CLUSTER_STATE="new"
 ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster-1"
@@ -106,8 +107,8 @@ cat << '__EOF__' | tee /etc/systemd/system/etcd.service
 [Unit]
 Description=Etcd Cluster
 After=network.target
-After=network-online.target
-Wants=network-online.target
+After=network.target
+Wants=network.target
 
 [Service]
 Type=notify
@@ -115,8 +116,8 @@ WorkingDirectory=/var/lib/etcd/
 EnvironmentFile=-/etc/etcd/etcd.conf
 User=etcd
 # set GOMAXPROCS to number of processors
-# ExecStart=/bin/bash -c "GOMAXPROCS=$(nproc) /usr/bin/etcd --name=\"${ETCD_NAME}\" --data-dir=\"${ETCD_DATA_DIR}\" --listen-client-urls=\"${ETCD_LISTEN_CLIENT_URLS}\""
-ExecStart=/usr/local/bin/etcd
+ExecStart=/bin/bash -c "GOMAXPROCS=$(nproc) /usr/local/bin/etcd --name=\"${ETCD_NAME}\" --data-dir=\"${ETCD_DATA_DIR}\" --listen-client-urls=\"${ETCD_LISTEN_CLIENT_URLS}\""
+#ExecStart=/usr/local/bin/etcd
 Restart=on-failure
 LimitNOFILE=65536
 
@@ -126,10 +127,14 @@ WantedBy=multi-user.target
 __EOF__
 
 
+# Make sure to use all our CPUs, because etcd can block a scheduler thread
+# export GOMAXPROCS=`nproc`
+  
+  
 
 
-
-
+  
+# systemctl daemon-reload
 # systemctl enable etcd
 # systemctl start etcd
 
