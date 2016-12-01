@@ -146,6 +146,58 @@ __EOF__
 
 
 
+# etcd master:
+./etcd --name calico0 --initial-advertise-peer-urls http://192.168.56.100:2380 \
+--listen-peer-urls http://192.168.56.100:2380 \
+--listen-client-urls http://192.168.56.100:2379,http://127.0.0.1:2379 \
+--advertise-client-urls http://192.168.56.100:2379 \
+--initial-cluster-token etcd-cluster-1 \
+--initial-cluster calico0=http://192.168.56.100:2380,calico1=http://192.168.56.101:2380 \
+--initial-cluster-state new
+
+
+
+# etcd slave:
+./etcd --name calico1 --initial-advertise-peer-urls http://192.168.56.101:2380 \
+--listen-peer-urls http://192.168.56.101:2380 \
+--listen-client-urls http://192.168.56.101:2379,http://127.0.0.1:2379 \
+--advertise-client-urls http://192.168.56.101:2379 \
+--initial-cluster-token etcd-cluster-1 \
+--initial-cluster calico0=http://192.168.56.100:2380,calico1=http://192.168.56.101:2380 \
+--initial-cluster-state new
+
+
+# master
+export ETCD_AUTHORITY=192.168.56.100:2379 
+calicoctl node --ip=192.168.56.100
+
+# slave
+export ETCD_AUTHORITY=192.168.56.100:2379 
+calicoctl node --ip=192.168.56.101
+
+
+
+
+# Environment
+# 172.17.42.30 kube-master
+# 172.17.42.31 kube-node1
+# 172.17.42.32 kube-node2
+
+
+# Start calico on master and node:
+export ETCD_AUTHORITY=172.17.42.30:2379
+calicoctl node --ip=172.17.42.31               
+#
+export ETCD_AUTHORITY=172.17.42.30:2379
+calicoctl node --ip=172.17.42.32
+
+
+
+# calicoctl status
+
+
+
+
 
 
 
