@@ -27,11 +27,10 @@ ExecStart=
 ExecStart=/usr/bin/dockerd --graph="/data/docker" --storage-driver=devicemapper
 
 
-#
+# docker.conf 
 [Service]
 ExecStart=
-ExecStart=/usr/bin/dockerd --graph="/data/docker" --storage-driver=devicemapper --storage-opt dm.basesize=100G
-
+ExecStart=/usr/bin/dockerd --graph="/data/docker" --storage-driver=devicemapper --storage-opt dm.basesize=100G --cluster-store=etcd://172.17.8.1:2379
 
 
 
@@ -45,6 +44,23 @@ systemctl restart docker
 docker network create --driver calico --ipam-driver calico-ipam management-database
 
 docker network create --driver calico --ipam-driver calico-ipam management-ui
+
+
+
+
+# https://www.fusonic.net/en/blog/docker-multihost/
+
+
+# etc/systemd/system/docker.service.d/30-custom.conf
+[Service]
+Environment="DOCKER_OPTS=--cluster-advertise eth0:2375 --cluster-store etcd://xxx.xxx.xxx.xxx:2379"
+
+# /etc/systemd/system/docker.service.d/20-http-proxy.conf
+[Service]
+Environment="HTTP_PROXY=http://proxy.example.com:1234"
+Environment="NO_PROXY=localhost,127.0.0.1,xxx.xxx.xxx.xxx,yyy.yyy.yyy.yyy,zzz.zzz.zzz.zzz"
+
+
 
 
 
