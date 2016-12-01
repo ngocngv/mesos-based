@@ -37,7 +37,7 @@ cp etcdctl /usr/local/bin/
 #----------------------------------------------------------------------------------
 cat << '__EOF__' | tee /etc/etcd/etcd.conf
 # [member]
-ETCD_NAME=etcd_1
+ETCD_NAME="etcd_1"
 ETCD_DATA_DIR="/var/lib/etcd/default.etcd"
 #ETCD_WAL_DIR=""
 #ETCD_SNAPSHOT_COUNT="10000"
@@ -54,7 +54,7 @@ ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:2379"
 
 # [cluster]
 ETCD_INITIAL_ADVERTISE_PEER_URLS="http://127.0.0.1:2380"
-ETCD_INITIAL_CLUSTER="etcd_cluster_1=http://127.0.0.1:2380"
+ETCD_INITIAL_CLUSTER="etcd_1=http://127.0.0.1:2380"
 ETCD_INITIAL_CLUSTER_STATE="new"
 ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster-1"
 #
