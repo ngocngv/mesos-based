@@ -41,3 +41,11 @@ systemctl daemon-reload
 systemctl restart docker 
 
 
+
+docker network create --driver calico --ipam-driver calico-ipam management-database
+
+docker network create --driver calico --ipam-driver calico-ipam management-ui
+
+
+
+
