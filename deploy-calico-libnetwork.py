@@ -136,7 +136,24 @@ WantedBy=multi-user.target
 
 
 
-#
+#-----------------------------------------------------------------------------
+[Service]
+Type=forking
+RemainAfterExit=yes
+Restart=on-failure
+RestartSec=20
+TimeoutStartSec=20m
+
+ExecStartPre=-/usr/bin/docker rm -f calico-node
+EnvironmentFile=/etc/default/calico
+ExecStart=/usr/bin/calicoctl node --ip="private_ipv4" --node-image="calico_image:calico_image_tag"
+
+ExecStop=/usr/bin/calicoctl node stop
+ExecStopPost=-/usr/bin/docker rm -f calico-node
+
+
+
+#-----------------------------------------------------------------------------
 systemctl daemon-reload
 systemctl enable calico-node
 systemctl start calico-node 
