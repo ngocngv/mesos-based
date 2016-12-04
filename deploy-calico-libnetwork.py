@@ -74,7 +74,8 @@ docker run -d \
 # http://docs.projectcalico.org/v2.0/usage/configuration/as-service
 
 # set calico environment file calico.env
-# /etc/default/calico
+# /etc/calico/calico.env
+# /etc/default/calico.env
 #--------------------------------------------------------------
 ETCD_ENDPOINTS=http://127.0.0.1:2379
 ETCD_CA_FILE=""
@@ -87,11 +88,51 @@ CALICO_IP6=""
 CALICO_AS=""
 CALICO_LIBNETWORK_ENABLED=true
 CALICO_NETWORKING_BACKEND=bird
+ETCD_AUTHORITY=http://127.0.0.1:2379   #IP and port of etcd instance used by Calico
 
 
 # Be sure to update this environment file as necessary, 
 # such as modifying ETCD_ENDPOINTS to point at the correct etcd cluster endpoints.
 
+
+
+# generate systemd unit file
+
+# /usr/lib/systemd/system/calico.service
+
+# /etc/systemd/system/calico-node.service
+#-----------------------------------------------------------------------------
+[Unit]
+Description=calico-node
+After=docker.service
+Requires=docker.service
+
+[Service]
+EnvironmentFile=/etc/calico/calico.env
+ExecStartPre=-/usr/bin/docker rm -f calico-node
+ExecStart=/usr/bin/docker run --net=host --privileged \
+ --name=calico-node \
+ -e HOSTNAME=${HOSTNAME} \
+ -e IP=${CALICO_IP} \
+ -e IP6=${CALICO_IP6} \
+ -e CALICO_NETWORKING_BACKEND=${CALICO_NETWORKING_BACKEND} \
+ -e AS=${CALICO_AS} \
+ -e NO_DEFAULT_POOLS=${CALICO_NO_DEFAULT_POOLS} \
+ -e CALICO_LIBNETWORK_ENABLED=${CALICO_LIBNETWORK_ENABLED} \
+ -e ETCD_ENDPOINTS=${ETCD_ENDPOINTS} \
+ -e ETCD_CA_CERT_FILE=${ETCD_CA_CERT_FILE} \
+ -e ETCD_CERT_FILE=${ETCD_CERT_FILE} \
+ -e ETCD_KEY_FILE=${ETCD_KEY_FILE} \
+ -v /var/log/calico:/var/log/calico \
+ -v /run/docker/plugins:/run/docker/plugins \
+ -v /lib/modules:/lib/modules \
+ -v /var/run/calico:/var/run/calico \
+ calico/node:v1.0.0-beta
+
+ExecStop=-/usr/bin/docker stop calico-node
+
+[Install]
+WantedBy=multi-user.target
 
 
 
