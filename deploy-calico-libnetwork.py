@@ -137,11 +137,12 @@ WantedBy=multi-user.target
 
 
 #
-systemctl daemon-reload 
-systemctl restart docker 
+systemctl daemon-reload
+systemctl enable calico-node
+systemctl start calico-node 
 
-
-
+#
+systemctl status calico-node
 
 
 
