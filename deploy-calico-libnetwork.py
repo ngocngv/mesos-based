@@ -136,6 +136,14 @@ WantedBy=multi-user.target
 
 
 
+#
+systemctl daemon-reload 
+systemctl restart docker 
+
+
+
+
+
 
 
 
