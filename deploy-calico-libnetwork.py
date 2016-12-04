@@ -40,7 +40,8 @@ echo 'docker' | tee /etc/mesos-slave/containerizers
 curl -o /usr/local/bin/calicoctl -L https://github.com/projectcalico/calico-containers/releases/download/v1.0.0-beta/calicoctl
 chmod +x /usr/local/bin/calicoctl
 
-# Then, use calicoctl to launch the calico/node container:
+
+# Use calicoctl to launch the calico/node container:
 # ETCD_ENDPOINTS=http://<ETCD_IP>:<ETCD_PORT> calicoctl node run
 ETCD_ENDPOINTS=http://127.0.0.1:2379 calicoctl node run
 
@@ -68,9 +69,42 @@ docker run -d \
 
 
 
-    
-    
-    
+
+# Running the Calico Node Container as a Service:
+# http://docs.projectcalico.org/v2.0/usage/configuration/as-service
+
+# set calico environment file calico.env
+# /etc/default/calico
+#--------------------------------------------------------------
+ETCD_ENDPOINTS=http://127.0.0.1:2379
+ETCD_CA_FILE=""
+ETCD_CERT_FILE=""
+ETCD_KEY_FILE=""
+CALICO_HOSTNAME="host-dc5k2u13"
+CALICO_NO_DEFAULT_POOLS=""
+CALICO_IP=""
+CALICO_IP6=""
+CALICO_AS=""
+CALICO_LIBNETWORK_ENABLED=true
+CALICO_NETWORKING_BACKEND=bird
+
+
+# Be sure to update this environment file as necessary, 
+# such as modifying ETCD_ENDPOINTS to point at the correct etcd cluster endpoints.
+
+
+
+
+
+
+
+
+#
+calicoctl node status
+
+
+
+   
     
     
 
