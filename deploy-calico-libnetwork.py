@@ -185,8 +185,9 @@ docker network create --driver calico --ipam-driver calico-ipam management-ui
 
 
 
-
-
+# tshoot
+systemctl status etcd
+curl 127.0.0.1:2379/v2/keys
 
 
 
