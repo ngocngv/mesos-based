@@ -86,10 +86,10 @@ ETCD_ADVERTISE_CLIENT_URLS="http://0.0.0.0:2379"
 #ETCD_PEER_CLIENT_CERT_AUTH="false"
 #ETCD_PEER_TRUSTED_CA_FILE=""
 
-#[logging]
-#ETCD_DEBUG="false"
+[logging]
+ETCD_DEBUG="false"
 # examples for -log-package-levels etcdserver=WARNING,security=DEBUG
-#ETCD_LOG_PACKAGE_LEVELS=""
+ETCD_LOG_PACKAGE_LEVELS="info"
 
 #[profiling]
 #ETCD_ENABLE_PPROF="false"
