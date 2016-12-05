@@ -47,25 +47,24 @@ ETCD_ENDPOINTS=http://127.0.0.1:2379 calicoctl node run
 
 # Running the following command:
 docker run -d \
-  --net=host \
-  --privileged \
-  --name=calico-node \
-  -e IP= \
-  -e IP6= \
-  -e NO_DEFAULT_POOLS= \
-  -e ETCD_AUTHORITY= \
-  -e CALICO_LIBNETWORK_ENABLED=true \
-  -e HOSTNAME=host-dc5k2u13 \
-  -e CALICO_NETWORKING_BACKEND=bird \
-  -e AS= \
-  -e ETCD_ENDPOINTS=http://127.0.0.1:2379 \
-  -e ETCD_SCHEME= \
-  -v /var/log/calico:/var/log/calico \
-  -v /var/run/calico:/var/run/calico \
-  -v /lib/modules:/lib/modules \
-  -v /run/docker/plugins:/run/docker/plugins \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  calico/node:v1.0.0-beta
+    --net=host \
+    --privileged \
+    --name=calico-node \
+    --restart=always \
+    -e NO_DEFAULT_POOLS= \
+    -e CALICO_LIBNETWORK_ENABLED=true \
+    -e ETCD_ENDPOINTS=http://127.0.0.1:2379 \
+    -e ETCD_AUTHORITY=127.0.0.1:2379 \        
+    -e ETCD_SCHEME= \
+    -e NODENAME=host-dc5k2u13 \
+    -e CALICO_NETWORKING_BACKEND=bird \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v /var/run/calico:/var/run/calico \
+    -v /lib/modules:/lib/modules \
+    -v /var/log/calico:/var/log/calico \
+    -v /run/docker/plugins:/run/docker/plugins \
+    calico/node:latest
+
 
 
 
