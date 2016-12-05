@@ -37,7 +37,7 @@ echo 'docker' | tee /etc/mesos-slave/containerizers
 # Calico can be installed on each Mesos agent using the calicoctl command-line tool.
 
 # golang calicoctl
-curl -o /usr/local/bin/calicoctl -L https://github.com/projectcalico/calico-containers/releases/download/v1.0.0-beta/calicoctl
+curl -o /usr/local/bin/calicoctl -L https://github.com/projectcalico/calico-containers/releases/download/v1.0.0-rc1/calicoctl
 chmod +x /usr/local/bin/calicoctl
 
 
