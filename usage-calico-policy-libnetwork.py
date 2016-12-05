@@ -5,6 +5,10 @@
 
 
 
+#----------------------------------------------------------
+# 1. Policy applied directly by the profile
+#----------------------------------------------------------
+
 
 docker network create --driver calico --ipam-driver calico-ipam database 
 docker network create --driver calico --ipam-driver calico-ipam frontend 
@@ -55,6 +59,70 @@ cat << '__EOF__' | /usr/local/bin/calicoctl apply -f -
         ports:
         -  3306
 __EOF__
+
+
+
+
+
+# Apply a policy using the data in policy.yaml.
+calicoctl apply -f ./policy.yaml
+
+
+
+
+
+
+#-----------------------------------------------------------------
+# 2. Global policy applied through label selection
+#-----------------------------------------------------------------
+
+
+docker network create --driver calico --ipam-driver calico-ipam database 
+docker network create --driver calico --ipam-driver calico-ipam frontend 
+
+
+# Use calicoctl apply to create or update the profiles:
+cat << '__EOF__' | /usr/local/bin/calicoctl apply -f -
+- apiVersion: v1
+  kind: profile
+  metadata:
+    name: database
+    labels:
+      role: database
+- apiVersion: v1
+  kind: profile
+  metadata:
+    name: frontend
+    labels:
+      role: frontend
+__EOF__
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
