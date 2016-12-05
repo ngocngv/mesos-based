@@ -19,7 +19,7 @@ docker network create --driver calico --ipam-driver calico-ipam frontend
 # Profile Resource (profile)
 # http://docs.projectcalico.org/v2.0/reference/calicoctl/resources/profile
 
-# Use calicoctl apply to create or update the profiles:
+# Use 'calicoctl apply' to create or update the profiles:
 #------------------------------------------------------------------------------
 cat << '__EOF__' | /usr/local/bin/calicoctl apply -f -
 - apiVersion: v1
@@ -81,7 +81,7 @@ docker network create --driver calico --ipam-driver calico-ipam database
 docker network create --driver calico --ipam-driver calico-ipam frontend 
 
 
-# Use calicoctl apply to create or update the profiles:
+# Use 'calicoctl apply' to create or update the profiles:
 cat << '__EOF__' | /usr/local/bin/calicoctl apply -f -
 - apiVersion: v1
   kind: profile
@@ -101,32 +101,48 @@ __EOF__
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# Create policy
+# use 'calicoctl create' to create two new policies for this:
+#-----------------------------------------------------------------------------------------------
+cat << '__EOF__' | /usr/local/bin/calicoctl create -f -
+- apiVersion: v1
+  kind: policy
+  metadata:
+    name: database
+  spec:
+    order: 0
+    selector: role == 'database'
+    ingress:
+    ingress:
+    - action: allow
+      protocol: tcp
+      source:
+        selector: role == 'frontend'
+      destination:
+        ports:
+        -  3306
+    - action: allow
+      source:
+        selector: role == 'database'
+    egress:
+    - action: allow
+      destination:
+        selector: role == 'database'
+- apiVersion: v1
+  kind: policy
+  metadata:
+    name: frontend
+  spec:
+    order: 0
+    selector: role == 'frontend'
+    egress:
+    - action: allow
+      protocol: tcp
+      destination:
+        selector: role == 'database'
+        ports:
+        -  3306
+__EOF__
 
 
 
