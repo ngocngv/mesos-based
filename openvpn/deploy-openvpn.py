@@ -64,7 +64,7 @@ export KEY_CN=openvpn.fpt.net
 cp /etc/openvpn/easy-rsa/openssl-1.0.0.cnf /etc/openvpn/easy-rsa/openssl.cnf
 
 
-# To generate the keys and certificates.
+## To generate the keys and certificates.
 source ./vars
 
 # NOTE: If you run ./clean-all, I will be doing a rm -rf on /etc/openvpn/easy-rsa/keys
@@ -73,6 +73,32 @@ source ./vars
 
 # build the certificate authority
 ./build-ca
+
+# generate the key and certificate for the server.
+./build-key-server server
+
+# generate Diffie-Hellman key exchange file.
+./build-dh 
+
+
+# completed the server keys and certificates generation process. 
+# copy them all into our OpenVPN directory.
+cd /etc/openvpn/easy-rsa/keys
+cp dh2048.pem ca.crt server.crt server.key /etc/openvpn
+
+
+
+## To have one client so we’ll just call it client.
+cd /etc/openvpn/easy-rsa
+./build-key client
+
+# That's it for keys and certificates.
+
+
+
+
+
+
 
 
 
