@@ -9,7 +9,43 @@
 docker network create --driver calico --ipam-driver calico-ipam management-database
 docker network create --driver calico --ipam-driver calico-ipam management-ui
 
-docker network create --driver=calico --ipam-driver=calico-ipam my-calico-net
+
+
+
+
+# The Calico IPAM driver provides address assignment that is geared towards a Calico deployment where scaling is important, 
+# and port-mapping for the containers is not required.
+
+# The Calico IPAM driver assigns addresses with host aggregation - this is an efficient approach for Calico requiring fewer programmed routes.
+
+
+
+# (Optional) Customizing the Calico IP Pool
+#--------------------------------------------------------
+# http://docs.projectcalico.org/v2.0/getting-started/docker/tutorials/basic
+
+# The calico/node container starts, a default pool is created (192.168.0.0/16).
+# To choose a different IP range or to enable IPIP, 
+# by creating a Calico IP Pool using the calicoctl create command specifying the ipip and nat-outgoing options in the spec. 
+# Here create a pool with CIDR 10.10.0.0/16.
+
+cat << '__EOF__' | calicoctl create -f -
+- apiVersion: v1
+  kind: ipPool
+  metadata:
+    cidr: 10.10.0.0/16
+  spec:
+    ipip:
+      enabled: true
+    nat-outgoing: true
+__EOF__
+
+
+
+
+
+
+
 
 
 
