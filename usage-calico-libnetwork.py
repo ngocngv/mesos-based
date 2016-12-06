@@ -41,9 +41,11 @@ cat << '__EOF__' | calicoctl create -f -
 __EOF__
 
 
+# IPIP should be enabled when running in a cloud environment that doesn’t enable direct container to container 
 
-
-
+# Create the network:
+docker network create --driver calico --ipam-driver calico-ipam --subnet 10.10.0.0/16 management-database
+docker network create --driver calico --ipam-driver calico-ipam --subnet 10.10.0.0/16 management-ui
 
 
 
