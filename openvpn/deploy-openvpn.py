@@ -63,7 +63,7 @@ export KEY_ORG="FPT"
 export KEY_EMAIL="info@fpt.net"
 export KEY_OU="Community"
 # X509 Subject Field
-export KEY_NAME="vpn.fpt.net"
+export KEY_NAME="server"
 export KEY_CN=openvpn.fpt.net
 
 
