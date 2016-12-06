@@ -26,6 +26,28 @@ cp /usr/share/doc/openvpn-*/sample/sample-config-files/server.conf  /etc/openvpn
 # /etc/openvpn/server.conf
 #----------------------------------------------------------------
 
+# listen on? (optional)
+local [public_addr]
+
+# open up this port on your firewall.
+port 1194
+
+# TCP or UDP server?
+proto udp
+
+# the firewall for the TUN/TAP interface.
+dev tap0
+
+# out unless you are ethernet bridging.
+server-bridge 10.10.0.254 255.255.255.0 10.10.0.200 10.10.0.250
+
+# bound to a DHCP client.
+server-bridge
+
+# server's TUN/TAP interface.
+client-to-client
+
+
 # Change the dh file name to dh2048.pem. 
 # Because the default Diffie-Hellman encryption length for Easy RSA will be 2048 bytes
 # openssl dhparam -out dh2048.pem 2048
