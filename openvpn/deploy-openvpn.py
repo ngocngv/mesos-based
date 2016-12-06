@@ -37,9 +37,42 @@ group nobody
 
 
 
+# Step 4 — Generating Keys and Certificates
+
+# Create a directory for the keys:
+mkdir -p /etc/openvpn/easy-rsa/keys
+
+# copy the key and certificate generation scripts into the directory:
+cp -rf /usr/share/easy-rsa/2.0/* /etc/openvpn/easy-rsa
+
+# edit the default values in the script. /etc/openvpn/easy-rsa/vars
+# Change values that start with KEY_.
+export KEY_COUNTRY="VN"
+export KEY_PROVINCE="CA"
+export KEY_CITY="HCM"
+export KEY_ORG="FPT"
+export KEY_EMAIL="info@fpt.net"
+export KEY_OU="Community"
+# X509 Subject Field
+export KEY_NAME="vpn.fpt.net"
+export KEY_CN=openvpn.fpt.net
 
 
 
+# OpenSSL configuration may not load due to the version being undetectable. 
+# To avoid this remove the version number from the openSSl file name.
+cp /etc/openvpn/easy-rsa/openssl-1.0.0.cnf /etc/openvpn/easy-rsa/openssl.cnf
+
+
+# To generate the keys and certificates.
+source ./vars
+
+# NOTE: If you run ./clean-all, I will be doing a rm -rf on /etc/openvpn/easy-rsa/keys
+# clean up any keys and certificates which may already be in this folder and generate our certificate authority.
+./clean-all 
+
+# build the certificate authority
+./build-ca
 
 
 
