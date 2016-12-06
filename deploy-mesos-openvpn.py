@@ -39,14 +39,20 @@ __EOF__
 
 
 # Starting the OpenVPN service:
-curl -sL -X POST \
+curl \
+  -sL \
+  -X POST \
   -H 'content-type: application/json' \
   leader.mesos:8080/v2/apps \
   -d@openvpn-marathon.json | jq .
 
 
-
-
+#
+curl \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d@openvpn-marathon.json \
+  http://$MASTER_1:8080/v2/apps | jq .
 
 
 
