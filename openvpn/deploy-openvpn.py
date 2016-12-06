@@ -109,6 +109,59 @@ cd /etc/openvpn/easy-rsa
 # Step 5 — Routing
 #--------------------------------------------------------------------------------------
 
+# Install the iptables and disable firewalld:
+yum install iptables-services
+#
+systemctl mask firewalld
+systemctl enable iptables
+systemctl stop firewalld
+systemctl start iptables
+iptables --flush
+
+
+
+# To add a rule to iptables to forward our routing to our OpenVPN subnet, and save this rule.
+# iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
+
+iptables -t nat -A POSTROUTING -s 10.10.0.0/16 -o em1 -j MASQUERADE
+#
+iptables-save > /etc/sysconfig/iptables
+
+
+# enable  IP forwarding in sysctl. Open sysctl.conf in vi editor.
+# /etc/sysctl.conf
+# net.ipv4.ip_forward = 1
+
+# To restart the network service.
+# systemctl restart network
+
+
+#--------------------------------------------------------------------------------------
+# Step 6 — Starting OpenVPN
+#--------------------------------------------------------------------------------------
+
+# completed the installation and ready start the openVPN service. 
+# add it to systemctl using the command:
+systemctl -f enable openvpn@server.service
+
+# Start OpenVPN:
+systemctl start openvpn@server.service
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
