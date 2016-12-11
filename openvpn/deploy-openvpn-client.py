@@ -33,7 +33,8 @@ key ./client.key
 
 
 
-
-
+# add user VPN
+useradd test01
+passwd test01
 
 
