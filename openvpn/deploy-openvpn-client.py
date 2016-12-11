@@ -17,18 +17,20 @@
 # openvon.ovpn
 #--------------------------------------------------------------------
 client
-dev tun
+auth-user-pass /opt/vpn10.10/pass.txt 
+dev tap8
 proto udp
-remote your_server_ip 1194
+remote 127.0.0.1 1194
 resolv-retry infinite
 nobind
 persist-key
 persist-tun
 comp-lzo
 verb 3
-ca /path/to/ca.crt
-cert /path/to/client.crt
-key /path/to/client.key
+ca ./ca.crt
+cert ./client.crt
+key ./client.key
+
 
 
 
